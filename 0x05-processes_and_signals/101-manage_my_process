@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# This script manages the my_process daemon.
+
+# Function to start the daemon
+start_daemon() {
+	if [ -f /var/run/my_process.pid ]; then
+		echo "my_process is already running."
+	else
+		./my_process &
+		echo $! > /var/run/my_process.pid
+		echo "my_process started"
+	fi
+}
+
+# Function to stop the daemon
+stop_daemon() {
+	if [ -f /var/run/my_process.pid ]; then
+		kill "$(cat /var/run/my_process.pid)"
+		rm -f /var/run/my_process.pid
+		echo "my_process stopped"
+	else
+		echo "my_process is not running."
+	fi
+}
+
+# Function to restart the daemon
+restart_daemon() {
+	stop_daemon
+	start_daemon
+	echo "my_process restarted"
+}
+
+# Check for valid arguments
+case "$1" in
+	start)
+		start_daemon
+		;;
+	stop)
+		stop_daemon
+		;;
+	restart)
+		restart_daemon
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+		;;
+esac
+
+exit 0
