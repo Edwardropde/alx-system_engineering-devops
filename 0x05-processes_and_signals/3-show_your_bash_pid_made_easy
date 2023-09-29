@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# This script displays the PID and process name of processes with bash
+
+# Get list with running processes and extract PID & Command file
+while read -r pid cmd; do
+	# Check if the command contains the word "bash"
+	if [[ "$cmd" == *"bash"* ]]; then
+		echo "$pid $cmd"
+	fi
+done
+
+# Exit the script
+exit 0
