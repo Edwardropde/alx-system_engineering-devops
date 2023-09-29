@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script displays its own PID.
+
+# Use the special variable $$ to get the script's PID and print it
+echo $$
+
+# Exit the script
+exit 0
+
