@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 # This script displays the PID and process name of processes with bash
 
-# Get list with running processes and extract PID & Command file
-while read -r pid cmd; do
-	# Check if the command contains the word "bash"
-	if [[ "$cmd" == *"bash"* ]]; then
-		echo "$pid $cmd"
-	fi
-done
+# Use pgrep to find processes with "bash" in their name and format
+user_bash_processes=$(pgrep -u "$(whoami)" -l bash)
 
-# Exit the script
-exit 0
+# Loop through the processes and display PID and process name
+while read -r line; do
+	pid=$(echo "$line" | awk '{print $1}')
+	process_name=$(echo "$line" | awk '{$1=""; print $0}')
+	echo "$pid $process_name"
+done <<< "$user_bash_processes"

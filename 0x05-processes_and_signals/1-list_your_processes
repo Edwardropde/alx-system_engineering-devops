@@ -2,8 +2,11 @@
 # This script displays a list of currently running processes.
 
 # Use the 'ps' command to display processes with user-oriented format
-# '-e' option shows all processes, '-o' specifies the output format
-ps -e -o user,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,command
+printf "%-12s %-6s %-6s %-10s %-10s %-5s %-8s %-8s %-s\n" \
+	"USER" "PID" "%CPU" "%MEM" "VSZ" "RSS" "TTY" "STAT" "COMMAND"
 
-# Exit the script
-exit 0
+# '-e' option shows all processes, '-o' specifies the output format
+ps aux --sort=-%cpu | awk 'NR <= 50 { printf "%-12s %-6s %-6s %-10s %-10s %-5s %-8s %-8s %-s\n", $1, $2, $3, $4, $5, $6, $7, $8, $11 }'
+
+# Show process hierarchy
+pstree
