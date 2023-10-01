@@ -1,7 +1,48 @@
 #!/usr/bin/env bash
 # This script writes "I am alive!" to /tmp/my_process at intervals.
 
-while true; do
-	echo "I am alive!" >> /tmp/my_process
-	sleep 2
-done
+# Define the output file
+output_file="/tmp/my_process"
+
+# Function to write "I am alive!" message every 2 seconds
+write_to_file() {
+	while true; do
+		echo "I am alive!" >> "$output_file"
+		sleep 2
+	done
+}
+
+# Check for the command-line argument
+case "$1" in
+	start)
+		# Start the process
+		write_to_file &
+		echo $! > /var/run/my_process.pid
+		echo "manage_my_process started"
+		;;
+	stop)
+		# Stop the process
+		if [ -e /var/run/my_process.pid ]; then
+			kill "$(cat /var/run/my_process.pid)"
+			rm /var/run/my_process.pid
+			echo "manage_my_process stopped"
+		else
+			echo "manage_my_process is not running"
+		fi
+		;;
+	restart)
+		# Restart the process
+		if [ -e /var/run/my_process.pid ]; then
+			kill "$(cat /var/run/my_process.pid)"
+			rm /var/run/my_process.pid
+		fi
+		write_to_file &
+		echo $! > /var/run/my_process.pid
+		echo "manage_my_process restarted"
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit 0

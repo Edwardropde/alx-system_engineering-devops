@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 # This script manages the my_process daemon.
 
+# Define the full path to the my_process script
+my_process_script="/alx-system_engineering-devops/0x05-processes_and_signals/my_process"
+
 # Function to start the daemon
 start_daemon() {
 	if [ -f /var/run/my_process.pid ]; then
 		echo "my_process is already running."
 	else
-		./my_process &
+		$my_process_script &
 		echo $! > /var/run/my_process.pid
 		echo "my_process started"
 	fi
