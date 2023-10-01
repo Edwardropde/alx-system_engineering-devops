@@ -1,48 +1,20 @@
 #!/usr/bin/env bash
 # This script manages the my_process daemon.
 
-# Define the full path to the my_process script
-my_process_script="/alx-system_engineering-devops/0x05-processes_and_signals/my_process"
-
-# Function to start the daemon
-start_daemon() {
-	if [ -f /var/run/my_process.pid ]; then
-		echo "my_process is already running."
-	else
-		$my_process_script &
-		echo $! > /var/run/my_process.pid
-		echo "my_process started"
-	fi
-}
-
-# Function to stop the daemon
-stop_daemon() {
-	if [ -f /var/run/my_process.pid ]; then
-		kill "$(cat /var/run/my_process.pid)"
-		rm -f /var/run/my_process.pid
-		echo "my_process stopped"
-	else
-		echo "my_process is not running."
-	fi
-}
-
-# Function to restart the daemon
-restart_daemon() {
-	stop_daemon
-	start_daemon
-	echo "my_process restarted"
-}
+# Define the path to the manage_my_process script
+manage_my_process_script="./manage_my_process"
 
 # Check for valid arguments
 case "$1" in
 	start)
-		start_daemon
+		$manage_my_process_script start
 		;;
 	stop)
-		stop_daemon
+		$manage_my_process_script stop
 		;;
 	restart)
-		restart_daemon
+		$manage_my_process_script stop
+		$manage_my_process_script start
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart}"

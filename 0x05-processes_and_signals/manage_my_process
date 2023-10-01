@@ -30,18 +30,8 @@ case "$1" in
 			echo "manage_my_process is not running"
 		fi
 		;;
-	restart)
-		# Restart the process
-		if [ -e /var/run/my_process.pid ]; then
-			kill "$(cat /var/run/my_process.pid)"
-			rm /var/run/my_process.pid
-		fi
-		write_to_file &
-		echo $! > /var/run/my_process.pid
-		echo "manage_my_process restarted"
-		;;
 	*)
-		echo "Usage: $0 {start|stop|restart}"
+		echo "Usage: $0 {start|stop}"
 		exit 1
 esac
 
