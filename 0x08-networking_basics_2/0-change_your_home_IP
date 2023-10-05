@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# This script configures DNS resolution for localhost and facebook.com
+
+# Check if the script is run as root
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root. Use 'sudo $0' to execute it."
+	exit 1
+fi
+
+# Modify /etc/hosts to set the desired IP addresses
+echo "127.0.0.2 localhost" >> /etc/hosts
+echo "8.8.8.8 facebook.com" >> /etc/hosts
+
+# Notify the user that changes have been made
+echo "DNS configuration updated."

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# This script listens on port 98 on localhost and echoes received text.
+
+# Check if the 'nc' command is available
+if ! command -v nc &>/dev/null; then
+	echo "Error: 'nc' (netcat) command is not available. Please install it."
+	exit 1
+fi
+
+# Create a named pipe to handle incoming data
+mkfifo /tmp/nc_fifo
+
+# Start listening on port 98 and echo received text
+nc -l -p 98 < /tmp/nc_fifo | while read line; do
+	echo "$line"
+done
+
+# Clean up the named pipe
+rm -f /tmp/nc_fifo

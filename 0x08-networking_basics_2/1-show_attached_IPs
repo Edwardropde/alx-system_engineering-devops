@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script displays all active IPv4 IPs on the machine.
+
+# Install net-tools package if not already installed
+if ! command -v ifconfig &>/dev/null; then
+	apt-get update
+	apt-get install -y net-tools
+fi
+
+# Use the 'ifconfig' command to show active IPv4 addresses
+ifconfig | grep -oP 'inet \K\S+' | grep -v '127.0.0.1'
