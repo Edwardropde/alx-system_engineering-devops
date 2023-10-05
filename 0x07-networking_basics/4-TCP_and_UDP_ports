@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script displays listening ports and shows the PID and name of the program to which each socket belongs
+
+# Use netstat to retrieve information about listening ports and associated programs.
+lsof -i -n -P | grep LISTEN
