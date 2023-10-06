@@ -7,13 +7,7 @@ if ! command -v nc &>/dev/null; then
 	exit 1
 fi
 
-# Create a named pipe to handle incoming data
-mkfifo /tmp/nc_fifo
-
 # Start listening on port 98 and echo received text
-nc -l -p 98 < /tmp/nc_fifo | while read line; do
-	echo "$line"
+while true; do
+	{ echo -ne "HTTP/1.1 200 OK\r\n\r\n$(date)\r\n"; } | nc -l -p 98 -q 1
 done
-
-# Clean up the named pipe
-rm -f /tmp/nc_fifo
