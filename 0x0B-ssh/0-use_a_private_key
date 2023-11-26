@@ -7,8 +7,6 @@ private_key="/home/vagrant/.ssh/school"
 user="ubuntu"
 server_ip="54.152.172.171"
 
-# Print a message
-echo "Connecting to the server..."
 
 # Use ssh with single-character flags
 ssh -i "$private_key" "$user@$server_ip"
