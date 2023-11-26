@@ -1,0 +1,7 @@
+# ~/.ssh/config
+
+Host 341705-web-01
+    HostName 54.152.172.171
+    User ubuntu
+    IdentityFile /home/vagrant/.ssh/school
+    PasswordAuthentication no

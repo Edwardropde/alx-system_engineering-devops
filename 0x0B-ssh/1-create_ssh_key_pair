@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+# Define the key file names
+private_key="school"
+public_key="$private_key.pub"
+
+# Generate RSA key pair with a passphrase
+ssh-keygen -t rsa -b 4096 -C "vagrant@ubuntu" -f "$private_key" -N "betty"
+
+# Display information about the generated keys
+echo "Generating public/private rsa key pair."
+echo "Your identification has been saved in $private_key."
+echo "Your public key has been saved in $public_key."
+
+# Display the key fingerprint and randomart image
+ssh-keygen -l -f "$private_key"
