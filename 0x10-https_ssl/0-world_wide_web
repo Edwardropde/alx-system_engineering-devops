@@ -1,18 +1,42 @@
 #!/usr/bin/env bash
 # Configure your domain zone so that the subdomain www and display information about subdomains
 
-if [ "$#" = 1 ]
-then
-    subdomains=("www" "lb-01" "web-01" "web-02")
-    for sub_domain in "${subdomains[@]}"
-    do
-	record_type=$(dig $sub_domain.$1 | grep -A1 'ANSWER SECTION' | tail -1 | awk '{print $4}')
-        destination=$(dig $sub_domain.$1 | grep -A1 'ANSWER SECTION' | tail -1 | awk '{print $5}')
-	echo "The subdomain $sub_domain is a $record_type record and points to $destination"
-    done
-elif [ "$#" = 2 ]
-then
-    record_type=$(dig $2.$1 | grep -A1 'ANSWER SECTION' | tail -1 | awk '{print $4}')
-    destination=$(dig $2.$1 | grep -A1 'ANSWER SECTION' | tail -1 | awk '{print $5}')
-    echo "The subdomain $2 is a $record_type record and points to $destination"
+audit_subdomain() {
+	local domain="$1"
+	local subdomain="$2"
+	local record_type
+	local destination
+
+	# Get DNS information for the subdomain
+	dns_info=$(dig +short $subdomain.$domain)
+
+	# Check if the subdomain has DNS records
+	if [ -z "$dns_info" ]; then
+		echo "The subdomain $subdomain does not have DNS records."
+	else
+		# Determine the record type and destination IP
+		if [[ "$dns_info" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+			record_type="A"
+			destination="$dns_info"
+		else
+			record_type="CNAME"
+			destination=$(dig +short $subdomain.$domain | tail -1)
+		fi
+		echo "The subdomain $subdomain is a $record_type record and points to $destination"
+	fi
+}
+
+# Main script
+if [ "$#" -eq 1 ]; then
+	# Display information for default subdomains
+	audit_subdomain "$1" "www"
+	audit_subdomain "$1" "lb-01"
+	audit_subdomain "$1" "web-01"
+	audit_subdomain "$1" "web-02"
+elif [ "$#" -eq 2 ]; then
+	# Display information for the specified subdomain
+	audit_subdomain "$1" "$2"
+else
+	echo "Usage: $0 domain [subdomain]"
+	exit 1
 fi
