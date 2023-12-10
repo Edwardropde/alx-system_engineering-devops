@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 # Nginx must be running, and listening on port 80
-sudo sed -i "s/sites-enabled/sites-available/" /etc/nginx/nginx.conf
+
+# remove default nginx configuration file
+rm /etc/nginx/sites_enabled/default
+# Configure nginx to listen to port 80 of al; active IPv4 IPs
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+# restart nginx
 sudo service nginx restart
