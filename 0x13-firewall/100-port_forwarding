@@ -1,5 +1,6 @@
 #
 # rules.before
+
 # Rules that should apply before the UFW command line added rules
 # Custom rules should be included in one of the chains
 #   ufw-before-input
