@@ -69,10 +69,10 @@ COMMIT
 -A ufw-not-local -j DROP
 
 # enable multicast mdns for service discovery
--A ufw-before-input -p udp -d 224.0.0.251 --dport 5353 -j ACCEPT
+-A ufw-before-input -p udp -d 54.152.172.171 --dport 5353 -j ACCEPT
 
 # enable multicast upnp for service discovery
--A ufw-before-input -p udp -d 239.255.255.250 --dport 1900 -j ACCEPT
+-A ufw-before-input -p udp -d 52.72.13.152 --dport 1900 -j ACCEPT
 
 # never delete the commit line or the rules wont be processed
 COMMIT
