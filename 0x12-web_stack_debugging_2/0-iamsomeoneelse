@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Script must run whoami command based on user passes as argument
+username=$1
+sudo -u "$username" whoami
