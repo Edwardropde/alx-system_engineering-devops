@@ -3,22 +3,15 @@
 import json
 import requests
 import sys
+from urllib import request
 
 
-if __name__ == '__main__':
-    url = 'https://jsonplaceholder.typicode.com/users?id=' + sys.argv[1]
-    r = requests.get(url)
-    if r.status_code == 200:
-        data = {sys.argv[1]: []}
-        username = r.json()[0].get("username")
-        url2 = 'https://jsonplaceholder.typicode.com/todos'
-        r2 = requests.get(url2)
-        for item in r2.json():
-            if item.get("userId") == int(sys.argv[1]):
-                d = {'task': item.get('title'),
-                     'completed': item.get('completed'),
-                     'username': username}
-                data[sys.argv[1]].append(d)
-    filename = sys.argv[1] + '.json'
-    with open(filename, 'w') as f:
-        json.dump(data, f)
+if __name__ == "__main__":
+    u_id = sys.argv[1]
+    url = "https://jsonplaceholder.typicode.com/"
+    user = requests.get(url+"users/{}".format(u_id)).json()
+    username = user.get("username")
+    todos = requests.get(url+"todos", params={"userId": u_id}).json()
+    with open("{}.json".format(u_id), "w") as jsonfile:
+        json.dump({u_id: [{"task": t.get("title"), "completed": t.get(
+            "completed"), "username": username} for t in todos]}, jsonfile)
